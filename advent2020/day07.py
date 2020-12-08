@@ -2,24 +2,6 @@ from typing import NamedTuple, Dict, List, Tuple
 import re
 from collections import defaultdict
 
-RAW = """light red bags contain 1 bright white bag, 2 muted yellow bags.
-dark orange bags contain 3 bright white bags, 4 muted yellow bags.
-bright white bags contain 1 shiny gold bag.
-muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
-shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
-dark olive bags contain 3 faded blue bags, 4 dotted black bags.
-vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
-faded blue bags contain no other bags.
-dotted black bags contain no other bags."""
-
-RAW2 = """shiny gold bags contain 2 dark red bags.
-dark red bags contain 2 dark orange bags.
-dark orange bags contain 2 dark yellow bags.
-dark yellow bags contain 2 dark green bags.
-dark green bags contain 2 dark blue bags.
-dark blue bags contain 2 dark violet bags.
-dark violet bags contain no other bags."""
-
 
 class Bag(NamedTuple):
     color: str
@@ -86,14 +68,38 @@ def num_bags_inside(
             stack.append((child, count * multiplier))
     return num_bags
 
+#
+# UNIT TESTS
+#
+
+RAW = """light red bags contain 1 bright white bag, 2 muted yellow bags.
+dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+bright white bags contain 1 shiny gold bag.
+muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
+dark olive bags contain 3 faded blue bags, 4 dotted black bags.
+vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
+faded blue bags contain no other bags.
+dotted black bags contain no other bags."""
+
+RAW2 = """shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags."""
+
 BAGS1 = make_bags(RAW)
 BAGS2 = make_bags(RAW2)
 
-
-
+#
+# PROBLEMS
+#
 
 with open('inputs/day07.txt') as f:
     raw = f.read()
-    bags = make_bags(raw)
-    print(len(can_eventually_contain(bags, 'shiny gold')))
-    print(num_bags_inside(bags, "shiny gold"))
+
+bags = make_bags(raw)
+print(len(can_eventually_contain(bags, 'shiny gold')))
+print(num_bags_inside(bags, "shiny gold"))

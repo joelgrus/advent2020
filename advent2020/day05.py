@@ -35,14 +35,19 @@ def find_seat2(bp: str) -> Seat:
     col = int(''.join({'R': '1', 'L': '0'}[c] for c in bp[-3:]), 2)
     return Seat(row, col)
 
+#
+# PROBLEMS
+#
+
 with open('inputs/day05.txt') as f:
     seats = [find_seat2(bp.strip()) for bp in f]
-    print(max(seat.seat_id for seat in seats))
 
-    seat_ids = [seat.seat_id for seat in seats]
+print(max(seat.seat_id for seat in seats))
 
-    lo = min(seat_ids)
-    hi = max(seat_ids)
+seat_ids = [seat.seat_id for seat in seats]
 
-    print([x for x in range(lo, hi) 
-           if x not in seat_ids]) # and x-1 in seat_ids and x+1 in seat_ids])
+lo = min(seat_ids)
+hi = max(seat_ids)
+
+print([x for x in range(lo, hi) 
+        if x not in seat_ids]) # and x-1 in seat_ids and x+1 in seat_ids])

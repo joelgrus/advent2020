@@ -2,17 +2,6 @@ from __future__ import annotations
 
 from typing import List, NamedTuple, Tuple, Set
 
-RAW = """..##.......
-#...#...#..
-.#....#..#.
-..#.#...#.#
-.#...##..#.
-..#.##.....
-.#.#.#....#
-.#........#
-#.##...#...
-#...##....#
-.#..#...#.#"""
 
 Point = Tuple[int, int]
 
@@ -34,7 +23,6 @@ class Slope(NamedTuple):
 
         return Slope(trees, width, height)
 
-SLOPE = Slope.parse(RAW)
 
 def count_trees(
     slope: Slope,
@@ -49,27 +37,12 @@ def count_trees(
         x = (x + right) % slope.width 
     return num_trees
 
-assert count_trees(SLOPE) == 7
-
-
-with open('inputs/day03.txt') as f:
-    raw = f.read()
-slope = Slope.parse(raw)
-print(count_trees(slope))
 
 # Right 1, down 1.
 # Right 3, down 1. (This is the slope you already checked.)
 # Right 5, down 1.
 # Right 7, down 1.
 # Right 1, down 2.
-
-def trees_product(slope: Slope, slopes: List[Point]) -> int:
-    product = 1
-    for right, down in slopes:
-        product *= count_trees(slope, right=right, down=down)
-
-    return product
-
 SLOPES = [
     (1, 1),
     (3, 1),
@@ -78,6 +51,42 @@ SLOPES = [
     (1, 2)
 ]
 
+def trees_product(slope: Slope, slopes: List[Point]) -> int:
+    product = 1
+    for right, down in slopes:
+        product *= count_trees(slope, right=right, down=down)
+
+    return product
+
+
+#
+# UNIT TESTS
+#
+
+RAW = """..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#"""
+
+SLOPE = Slope.parse(RAW)
+
+assert count_trees(SLOPE) == 7
+
 assert trees_product(SLOPE, SLOPES) == 336
 
+#
+# PROBLEM
+#
+
+with open('inputs/day03.txt') as f:
+    raw = f.read()
+slope = Slope.parse(raw)
+print(count_trees(slope))
 print(trees_product(slope, SLOPES))

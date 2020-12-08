@@ -1,20 +1,6 @@
 from typing import Dict, List
 import re
 
-RAW = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-byr:1937 iyr:2017 cid:147 hgt:183cm
-
-iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
-hcl:#cfa07d byr:1929
-
-hcl:#ae17e1 iyr:2013
-eyr:2024
-ecl:brn pid:760753108 byr:1931
-hgt:179cm
-
-hcl:#cfa07d eyr:2025 pid:166559648
-iyr:2011 ecl:brn hgt:59in"""
-
 
 Passport = Dict[str, str]
 
@@ -35,8 +21,6 @@ def make_passports(raw: str) -> List[Passport]:
     chunks = raw.split("\n\n")
     return [make_passport(chunk) for chunk in chunks if chunk.strip()]
 
-PASSPORTS = make_passports(RAW)
-
 DEFAULT_FIELDS = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
 
@@ -44,7 +28,6 @@ def is_valid(passport: Passport,
              required_fields: List[str] = DEFAULT_FIELDS) -> bool:
     return all(field in passport for field in required_fields)
 
-assert sum(is_valid(passport) for passport in PASSPORTS) == 2
 
 def is_valid2(passport: Passport) -> bool:
     checks = [
@@ -74,6 +57,28 @@ def is_valid_height(hgt: str) -> bool:
             return False
 
     return False
+
+#
+# UNIT TESTS
+#
+
+RAW = """ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+byr:1937 iyr:2017 cid:147 hgt:183cm
+
+iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
+hcl:#cfa07d byr:1929
+
+hcl:#ae17e1 iyr:2013
+eyr:2024
+ecl:brn pid:760753108 byr:1931
+hgt:179cm
+
+hcl:#cfa07d eyr:2025 pid:166559648
+iyr:2011 ecl:brn hgt:59in"""
+
+PASSPORTS = make_passports(RAW)
+
+assert sum(is_valid(passport) for passport in PASSPORTS) == 2
 
 INVALID = make_passports("""eyr:1972 cid:100
 hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
@@ -105,6 +110,9 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719""")
 assert all(is_valid2(passport) for passport in VALID)
 assert not any(is_valid2(passport) for passport in INVALID)
 
+#
+# PROBLEMS
+#
 
 with open('inputs/day04.txt') as f:
     passports = make_passports(f.read())

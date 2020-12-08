@@ -2,18 +2,6 @@ from __future__ import annotations
 
 from typing import NamedTuple, List
 
-
-RAW = """nop +0
-acc +1
-jmp +4
-acc +3
-jmp -3
-acc -99
-acc +1
-jmp -4
-acc +6"""
-
-
 class Instruction(NamedTuple):
     op: str
     arg: int
@@ -22,8 +10,6 @@ class Instruction(NamedTuple):
     def parse(line: str) -> Instruction:
         op, arg = line.strip().split()
         return Instruction(op, int(arg))
-
-INSTRUCTIONS = [Instruction.parse(line) for line in RAW.split("\n")]
 
 
 class Booter:
@@ -64,18 +50,6 @@ class Booter:
 
         return False
 
-BOOTER = Booter(INSTRUCTIONS)
-BOOTER.run_until_repeat()
-assert BOOTER.accumulator == 5
-
-with open('inputs/day08.txt') as f:
-    raw = f.read()
-
-instructions = [Instruction.parse(line) for line in raw.split("\n")]
-booter = Booter(instructions)
-booter.run_until_repeat()
-print(booter.accumulator)
-
 
 def find_terminator(instructions: List[Instruction]) -> int:
     for i, (op, arg) in enumerate(instructions):
@@ -95,6 +69,37 @@ def find_terminator(instructions: List[Instruction]) -> int:
 
     raise RuntimeError("never terminated")
 
+#
+# UNIT TESTS
+#
+
+RAW = """nop +0
+acc +1
+jmp +4
+acc +3
+jmp -3
+acc -99
+acc +1
+jmp -4
+acc +6"""
+
+INSTRUCTIONS = [Instruction.parse(line) for line in RAW.split("\n")]
+
+BOOTER = Booter(INSTRUCTIONS)
+BOOTER.run_until_repeat()
+assert BOOTER.accumulator == 5
+
 assert find_terminator(INSTRUCTIONS) == 8
 
+#
+# PROBLEM
+#
+
+with open('inputs/day08.txt') as f:
+    raw = f.read()
+
+instructions = [Instruction.parse(line) for line in raw.split("\n")]
+booter = Booter(instructions)
+booter.run_until_repeat()
+print(booter.accumulator)
 print(find_terminator(instructions))
