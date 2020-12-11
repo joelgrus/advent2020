@@ -105,6 +105,7 @@ assert count_paths(ADAPTERS2) == 19208
 
 with open('inputs/day10.txt') as f:
     adapters = [int(x) for x in f]
-    skips = count_skips(adapters)
-    print(skips[1] * skips[3])
-    print(count_paths(adapters))
+
+skips = count_skips(adapters)
+print(skips[1] * skips[3])
+print(count_paths(adapters))
