@@ -44,6 +44,25 @@ def mul_inv(a, b):
     if x1 < 0: x1 += b0
     return x1
 
+
+# Thanks to YouTube commenter Paul Fornia who suggested this approach.
+def chinese_remainder2(divisors: List[int], remainders: List[int]) -> int:
+    solution = remainders[0]
+    increment = divisors[0]
+
+    # invariant: at step i, we have that 
+    #     `solution % d[j] == r[j]` 
+    #     `increment % d[j] == 0`
+    # for all i <= j. In particular, we can add multiples of `increment`
+    # to `solution` without changing the first invariant.
+
+    for d, r in zip(divisors[1:], remainders[1:]):
+        while solution % d != r:
+            solution += increment
+        increment *= d 
+
+    return solution % increment
+
 #
 # unit tests
 #
