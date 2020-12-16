@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Iterator
+from typing import List, Iterator, Dict
 import itertools
 
 def play_game(starting_numbers: List[int]) -> Iterator[int]:
@@ -31,7 +31,7 @@ def play_game(starting_numbers: List[int]) -> Iterator[int]:
 
 def n2020(starting_numbers: List[int]) -> int:
     game = play_game(starting_numbers)
-    for _ in range(2020):
+    for i in range(2020):
         n = next(game)
     return n
 
@@ -57,5 +57,5 @@ assert n2020([0, 3, 6]) == 436
 #
 
 numbers = [2,20,0,4,1,17]
-print(n2020(numbers))
+# print(n2020(numbers))
 # print(n30000000(numbers))
